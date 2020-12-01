@@ -1,0 +1,28 @@
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/routing bgp instance
+set default as=65550
+add as=65665 name=bgp1 router-id=10.55.55.1
+/ip address
+add address=10.5.5.2/30 interface=ether1 network=10.5.5.0
+add address=10.55.55.1/24 interface=ether4 network=10.55.55.0
+/ip dhcp-client
+add dhcp-options=hostname,clientid disabled=no interface=ether3
+/ip route
+add distance=1 gateway=10.5.5.1
+/ip service
+set ftp disabled=yes
+set www disabled=yes
+set api disabled=yes
+set winbox disabled=yes
+set api-ssl disabled=yes
+/ip ssh
+set strong-crypto=yes
+/routing bgp network
+add network=10.55.0.0/16 synchronize=no
+/routing bgp peer
+add name=peer1 out-filter=as65005-out remote-address=10.5.5.1 remote-as=65505
+/routing filter
+add action=accept chain=as65005-out prefix=10.55.0.0/16
+/system identity
+set name=tik5

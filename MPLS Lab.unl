@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<lab name="LDP Transition Lab" id="fecc2287-2a12-4bb2-a27a-416c5b77b89c" version="1" scripttimeout="300" countdown="0" lock="0" author="Nick Buraglio">
+  <topology>
+    <nodes>
+      <node id="1" name="7750SR_CPM1" type="qemu" template="timoscpm" image="timoscpm-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="2" uuid="538ada49-423e-4f49-bca6-5d5301ba6ec5" firstmac="50:06:00:01:00:00" timos_line="slot=A chassis=SR-12e card=cpm5" timos_license="cf3:\lic" management_address="10.255.254.1/24" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS.png" config="0" left="375" top="375">
+        <interface id="0" name="Mgmt" type="ethernet" network_id="11"/>
+        <interface id="1" name="SF" type="ethernet" network_id="1"/>
+      </node>
+      <node id="2" name="7750SR_CPM2" type="qemu" template="timoscpm" image="timoscpm-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="2" uuid="538ada49-423e-4f49-bca6-5d5301ba6ec5" firstmac="50:06:00:02:00:00" timos_line="slot=A chassis=SR-12e card=cpm5" timos_license="cf3:\lic" management_address="10.255.254.2/24" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS.png" config="0" left="774" top="372">
+        <interface id="0" name="Mgmt" type="ethernet" network_id="11"/>
+        <interface id="1" name="SF" type="ethernet" network_id="2"/>
+      </node>
+      <node id="3" name="7750SR_CPM3" type="qemu" template="timoscpm" image="timoscpm-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="2" uuid="538ada49-423e-4f49-bca6-5d5301ba6ec5" firstmac="50:06:00:03:00:00" timos_line="slot=A chassis=SR-12e card=cpm5" timos_license="cf3:\lic" management_address="10.255.254.4/24" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS.png" config="0" left="759" top="855">
+        <interface id="0" name="Mgmt" type="ethernet" network_id="11"/>
+        <interface id="1" name="SF" type="ethernet" network_id="4"/>
+      </node>
+      <node id="4" name="7750SR_CPM4" type="qemu" template="timoscpm" image="timoscpm-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="2" uuid="538ada49-423e-4f49-bca6-5d5301ba6ec5" firstmac="50:06:00:04:00:00" timos_line="slot=A chassis=SR-12e card=cpm5" timos_license="cf3:\lic" management_address="10.255.254.3/24" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS.png" config="0" left="393" top="858">
+        <interface id="0" name="Mgmt" type="ethernet" network_id="11"/>
+        <interface id="1" name="SF" type="ethernet" network_id="3"/>
+      </node>
+      <node id="5" name="7750SR-IOM5" type="qemu" template="timosiom" image="timosiom-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="10" uuid="91fd8dd7-122c-48c6-8311-88913f2de78f" firstmac="50:06:00:05:00:00" timos_line="slot=1 chassis=SR-12e card=iom3-xp mda/1=m10-1gb-sfp-b" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS linecard.png" config="0" left="378" top="489">
+        <interface id="1" name="SF" type="ethernet" network_id="1"/>
+        <interface id="2" name="1/1/1" type="ethernet" network_id="5"/>
+        <interface id="3" name="1/1/2" type="ethernet" network_id="8"/>
+        <interface id="4" name="1/1/3" type="ethernet" network_id="9"/>
+        <interface id="5" name="1/1/4" type="ethernet" network_id="14"/>
+      </node>
+      <node id="6" name="7750SR-IOM6" type="qemu" template="timosiom" image="timosiom-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="10" uuid="0ee5061c-16ad-4711-b3cb-573c4676697f" firstmac="50:06:00:06:00:00" timos_line="slot=1 chassis=SR-12e card=iom3-xp mda/1=m10-1gb-sfp-b" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS linecard.png" config="0" left="771" top="486">
+        <interface id="1" name="SF" type="ethernet" network_id="2"/>
+        <interface id="2" name="1/1/1" type="ethernet" network_id="6"/>
+        <interface id="3" name="1/1/2" type="ethernet" network_id="5"/>
+        <interface id="4" name="1/1/3" type="ethernet" network_id="10"/>
+        <interface id="5" name="1/1/4" type="ethernet" network_id="16"/>
+        <interface id="6" name="1/1/5" type="ethernet" network_id="22"/>
+      </node>
+      <node id="7" name="7750SR-IOM7" type="qemu" template="timosiom" image="timosiom-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="10" uuid="4c0bd76c-f8b6-4a6a-8363-273a93ac28d6" firstmac="50:06:00:07:00:00" timos_line="slot=1 chassis=SR-12e card=iom3-xp mda/1=m10-1gb-sfp-b" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS linecard.png" config="0" left="774" top="693">
+        <interface id="1" name="SF" type="ethernet" network_id="4"/>
+        <interface id="2" name="1/1/1" type="ethernet" network_id="7"/>
+        <interface id="3" name="1/1/2" type="ethernet" network_id="6"/>
+        <interface id="4" name="1/1/3" type="ethernet" network_id="9"/>
+        <interface id="5" name="1/1/4" type="ethernet" network_id="17"/>
+        <interface id="6" name="1/1/5" type="ethernet" network_id="21"/>
+        <interface id="7" name="1/1/6" type="ethernet" network_id="28"/>
+        <interface id="8" name="1/1/7" type="ethernet" network_id="32"/>
+      </node>
+      <node id="8" name="7750SR-IOM8" type="qemu" template="timosiom" image="timosiom-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="10" uuid="5f98f713-1351-4d5d-bfc9-efc30f4f0e6a" firstmac="50:06:00:08:00:00" timos_line="slot=1 chassis=SR-12e card=iom3-xp mda/1=m10-1gb-sfp-b" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS linecard.png" config="0" left="378" top="693">
+        <interface id="1" name="SF" type="ethernet" network_id="3"/>
+        <interface id="2" name="1/1/1" type="ethernet" network_id="8"/>
+        <interface id="3" name="1/1/2" type="ethernet" network_id="7"/>
+        <interface id="4" name="1/1/3" type="ethernet" network_id="10"/>
+        <interface id="5" name="1/1/4" type="ethernet" network_id="15"/>
+        <interface id="6" name="1/1/5" type="ethernet" network_id="19"/>
+        <interface id="7" name="1/1/6" type="ethernet" network_id="29"/>
+      </node>
+      <node id="9" name="vsr5" type="qemu" template="timoscpm" image="timoscpm-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="2" uuid="538ada49-423e-4f49-bca6-5d5301ba6ec5" firstmac="50:06:00:09:00:00" timos_line="slot=A chassis=SR-12e card=cpm5" timos_license="cf3:\lic" management_address="10.255.254.5/24" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS.png" config="0" left="1032" top="369">
+        <interface id="0" name="Mgmt" type="ethernet" network_id="11"/>
+        <interface id="1" name="SF" type="ethernet" network_id="12"/>
+      </node>
+      <node id="10" name="vsr6" type="qemu" template="timoscpm" image="timoscpm-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="2" uuid="538ada49-423e-4f49-bca6-5d5301ba6ec5" firstmac="50:06:00:0a:00:00" timos_line="slot=A chassis=SR-12e card=cpm5" timos_license="cf3:\lic" management_address="10.255.254.6/24" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS.png" config="0" left="150" top="375">
+        <interface id="0" name="Mgmt" type="ethernet" network_id="11"/>
+        <interface id="1" name="SF" type="ethernet" network_id="13"/>
+      </node>
+      <node id="11" name="7750SR11" type="qemu" template="timosiom" image="timosiom-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="4096" ethernet="10" uuid="040896d1-68f4-49d6-95d3-0940d1c5bf1b" firstmac="50:06:00:0b:00:00" timos_line="slot=1 chassis=SR-12e card=iom3-xp mda/1=m10-1gb-sfp-b" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS linecard.png" config="0" left="1020" top="492">
+        <interface id="1" name="SF" type="ethernet" network_id="12"/>
+        <interface id="2" name="1/1/1" type="ethernet" network_id="16"/>
+        <interface id="3" name="1/1/2" type="ethernet" network_id="17"/>
+        <interface id="4" name="1/1/3" type="ethernet" network_id="31"/>
+        <interface id="6" name="1/1/5" type="ethernet" network_id="20"/>
+      </node>
+      <node id="12" name="7750SR12" type="qemu" template="timosiom" image="timosiom-14.0.R3" console="telnet" cpu="4" cpulimit="0" ram="4096" ethernet="10" uuid="cf84db4e-938c-441b-b7bd-1f52171bfe87" firstmac="50:06:00:0c:00:00" timos_line="slot=1 chassis=SR-12e card=iom3-xp mda/1=m10-1gb-sfp-b" qemu_options=" -machine type=pc,accel=kvm -enable-kvm -serial mon:stdio -nographic -no-user-config -nodefaults -rtc base=utc" delay="0" icon="SROS linecard.png" config="0" left="132" top="489">
+        <interface id="1" name="SF" type="ethernet" network_id="13"/>
+        <interface id="2" name="1/1/1" type="ethernet" network_id="14"/>
+        <interface id="3" name="1/1/2" type="ethernet" network_id="15"/>
+        <interface id="6" name="1/1/5" type="ethernet" network_id="18"/>
+      </node>
+      <node id="15" name="host4" type="qemu" template="linux" image="linux-ubuntu-srv-18.04.4" console="vnc" cpu="1" cpulimit="0" ram="2048" ethernet="1" uuid="513977e8-0cad-4250-935f-b6e33a38e167" shutdown="1" firstmac="50:06:00:0f:00:00" delay="0" icon="Server.png" config="0" left="240" top="849">
+        <interface id="0" name="e0" type="ethernet" network_id="26"/>
+      </node>
+      <node id="17" name="host3" type="qemu" template="linux" image="linux-ubuntu-srv-18.04.4" console="vnc" cpu="1" cpulimit="0" ram="2048" ethernet="1" uuid="b40acf3a-e2cd-4416-95d7-9d9366305618" shutdown="1" firstmac="50:06:00:11:00:00" delay="0" icon="Server.png" config="0" left="1116" top="708">
+        <interface id="0" name="e0" type="ethernet" network_id="25"/>
+      </node>
+      <node id="18" name="cust6" type="qemu" template="mikrotik" image="mikrotik-6.43.8" console="telnet" cpu="2" cpulimit="0" ram="512" ethernet="4" uuid="06201b1d-2723-4a1b-b22f-6dc5f945a22f" firstmac="50:06:00:12:00:00" delay="0" icon="Router.png" config="0" left="18" top="504">
+        <interface id="0" name="eth1" type="ethernet" network_id="18"/>
+        <interface id="3" name="eth4" type="ethernet" network_id="23"/>
+      </node>
+      <node id="19" name="cust5" type="qemu" template="mikrotik" image="mikrotik-6.43.8" console="telnet" cpu="2" cpulimit="0" ram="512" ethernet="4" uuid="817feafc-8bb0-4b76-a3cb-5d389819a2b1" firstmac="50:06:00:13:00:00" delay="0" icon="Router.png" config="0" left="1176" top="438">
+        <interface id="0" name="eth1" type="ethernet" network_id="20"/>
+        <interface id="3" name="eth4" type="ethernet" network_id="24"/>
+      </node>
+      <node id="20" name="cust3" type="qemu" template="mikrotik" image="mikrotik-6.43.8" console="telnet" cpu="2" cpulimit="0" ram="512" ethernet="4" uuid="ea887311-30ee-4b67-b527-bf8aeecb2fed" firstmac="50:06:00:14:00:00" delay="0" icon="Router.png" config="0" left="990" top="720">
+        <interface id="0" name="eth1" type="ethernet" network_id="21"/>
+        <interface id="1" name="eth2" type="ethernet" network_id="25"/>
+      </node>
+      <node id="21" name="cust4" type="qemu" template="mikrotik" image="mikrotik-6.43.8" console="telnet" cpu="2" cpulimit="0" ram="256" ethernet="4" uuid="f2a26077-6474-494a-b8c8-1c85e02c8ddb" firstmac="50:06:00:15:00:00" delay="0" icon="Router.png" config="0" left="237" top="723">
+        <interface id="0" name="eth1" type="ethernet" network_id="19"/>
+        <interface id="3" name="eth4" type="ethernet" network_id="26"/>
+      </node>
+      <node id="23" name="vMX-VCP" type="qemu" template="vmxvcp" image="vmxvcp-19.1R1.6-domestic-VCP" console="telnet" cpu="4" cpulimit="0" ram="8192" ethernet="2" uuid="bf788182-b2c8-40b9-81a7-b2f916db1943" firstmac="50:06:00:17:00:00" delay="0" icon="JunipervQFXre.png" config="0" left="597" top="786">
+        <interface id="0" name="em0 / fxp0" type="ethernet" network_id="11"/>
+        <interface id="1" name="em1 / int" type="ethernet" network_id="27"/>
+      </node>
+      <node id="24" name="vMX-VFP" type="qemu" template="vmxvfp" image="vmxvfp-19.1R1.6-domestic-VFP" console="telnet" cpu="3" cpulimit="0" ram="4096" ethernet="12" uuid="d8a428a8-1d61-4a8b-a358-bf39f657b22a" firstmac="50:06:00:18:00:00" delay="0" icon="JunipervQFXpfe.png" config="0" left="597" top="975">
+        <interface id="1" name="em1 / int" type="ethernet" network_id="27"/>
+        <interface id="2" name="em2 / ge-0/0/0" type="ethernet" network_id="28"/>
+        <interface id="3" name="em3 / ge-0/0/1" type="ethernet" network_id="29"/>
+        <interface id="4" name="em4 / ge-0/0/2" type="ethernet" network_id="33"/>
+      </node>
+      <node id="13" name="host6" type="qemu" template="linux" image="linux-ubuntu-srv-18.04.4" console="vnc" cpu="1" cpulimit="0" ram="2048" ethernet="1" uuid="991bb6a4-1f43-460b-97cd-2e742c104211" shutdown="1" firstmac="50:06:00:0d:00:00" delay="0" icon="Server.png" config="0" left="21" top="609">
+        <interface id="0" name="e0" type="ethernet" network_id="23"/>
+      </node>
+      <node id="22" name="host2" type="qemu" template="linux" image="linux-ubuntu-srv-18.04.4" console="vnc" cpu="1" cpulimit="0" ram="2048" ethernet="1" uuid="4fafcfde-06f0-4e15-85ae-46e4461516e2" shutdown="1" firstmac="50:06:00:16:00:00" delay="0" icon="Server.png" config="0" left="906" top="417">
+        <interface id="0" name="e0" type="ethernet" network_id="22"/>
+      </node>
+      <node id="29" name="host5" type="qemu" template="linux" image="linux-ubuntu-srv-18.04.4" console="vnc" cpu="1" cpulimit="0" ram="2048" ethernet="1" uuid="5c2a15be-692d-452e-b20d-f822dacde818" shutdown="1" firstmac="50:06:00:1d:00:00" delay="0" icon="Server.png" config="0" left="1179" top="294">
+        <interface id="0" name="e0" type="ethernet" network_id="24"/>
+      </node>
+      <node id="14" name="FullTable-Linux" type="qemu" template="linux" image="linux-ubuntu-srv-18.04.4-fulltable" console="vnc" cpu="4" cpulimit="0" ram="16384" ethernet="4" uuid="e07c4ffc-e130-4e0d-b0e4-2809fda3a39e" shutdown="1" firstmac="50:06:00:0e:00:00" delay="0" icon="Server.png" config="0" left="1737" top="183">
+        <interface id="0" name="e0" type="ethernet" network_id="11"/>
+        <interface id="1" name="e1" type="ethernet" network_id="30"/>
+      </node>
+      <node id="16" name="Transit1" type="qemu" template="mikrotik" image="mikrotik-6.47.1" console="telnet" cpu="4" cpulimit="0" ram="16384" ethernet="6" uuid="a4b7e0fd-d18b-4c76-ad81-70f953681f35" firstmac="50:06:00:10:00:00" delay="0" icon="Router.png" config="0" left="1755" top="531">
+        <interface id="0" name="eth1" type="ethernet" network_id="30"/>
+        <interface id="1" name="eth2" type="ethernet" network_id="31"/>
+        <interface id="2" name="eth3" type="ethernet" network_id="32"/>
+        <interface id="3" name="eth4" type="ethernet" network_id="33"/>
+      </node>
+    </nodes>
+    <networks>
+      <network id="1" type="bridge" name="Net-7750SR-IOM5iface_1" left="435" top="496" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="2" type="bridge" name="Net-7750SR-IOM6iface_1" left="837" top="499" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="3" type="bridge" name="Net-7750SR-IOM8iface_1" left="441" top="811" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="4" type="bridge" name="Net-7750SR_CPM3iface_1" left="837" top="712" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="5" type="bridge" name="Net-7750SR-IOM5iface_2" left="438" top="529" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="6" type="bridge" name="Net-7750SR-IOM6iface_2" left="834" top="523" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="7" type="bridge" name="Net-7750SR-IOM7iface_2" left="834" top="733" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="8" type="bridge" name="Net-7750SR-IOM8iface_2" left="441" top="760" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="9" type="bridge" name="Net-7750SR-IOM5iface_4" left="438" top="529" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="10" type="bridge" name="Net-7750SR-IOM6iface_4" left="831" top="529" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="11" type="pnet1" name="MGMT_Net" left="594" top="207" style="Solid" linkstyle="Straight" color="" label="" visibility="1"/>
+      <network id="12" type="bridge" name="Net-7750SR11iface_1" left="1083" top="514" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="13" type="bridge" name="Net-7750SR_CPM10iface_1" left="210" top="424" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="14" type="bridge" name="Net-7750SR12iface_2" left="225" top="541" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="15" type="bridge" name="Net-7750SR12iface_3" left="225" top="529" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="16" type="bridge" name="Net-7750SR11iface_2" left="1080" top="532" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="17" type="bridge" name="Net-7750SR11iface_3" left="1080" top="532" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="18" type="bridge" name="Net-tik6iface_0" left="138" top="964" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="21" type="bridge" name="Net-tik3iface_0" left="1191" top="985" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="20" type="bridge" name="Net-tik5iface_0" left="1416" top="643" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="25" type="bridge" name="Net-host3iface_0" left="1050" top="877" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="19" type="bridge" name="Net-cust4iface_0" left="297" top="763" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="26" type="bridge" name="Net-cust4iface_3" left="297" top="763" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="27" type="bridge" name="Net-vMX-VFPiface_1" left="261" top="208" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="28" type="bridge" name="Net-vMX-VFPiface_2" left="657" top="892" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="29" type="bridge" name="Net-vMX-VFPiface_3" left="657" top="892" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="22" type="bridge" name="Net-host2iface_0" left="942" top="466" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="23" type="bridge" name="Net-host6iface_0" left="81" top="649" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="24" type="bridge" name="Net-host29iface_0" left="1242" top="658" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="30" type="bridge" name="Net-Transit1iface_0" left="954" top="106" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="31" type="bridge" name="Net-Transit1iface_1" left="1566" top="100" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="32" type="bridge" name="Net-Transit1iface_2" left="1812" top="547" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+      <network id="33" type="bridge" name="Net-Transit1iface_3" left="1815" top="571" style="Solid" linkstyle="Straight" color="" label="" visibility="0"/>
+    </networks>
+  </topology>
+</lab>

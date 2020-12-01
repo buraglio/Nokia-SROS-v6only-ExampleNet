@@ -1,0 +1,608 @@
+exit all
+configure
+#--------------------------------------------------
+echo "System Configuration"
+#--------------------------------------------------
+    system
+        name "vsr3"
+        dns
+        exit
+        rollback
+            rollback-location "cf3:/ansible"
+        exit
+        snmp
+            shutdown
+        exit
+        time
+            sntp
+                shutdown
+            exit
+            zone UTC
+        exit
+        thresholds
+            rmon
+            exit
+        exit
+    exit
+#--------------------------------------------------
+echo "System Security Configuration"
+#--------------------------------------------------
+    system
+        security
+            management-access-filter
+                ip-filter
+                    shutdown
+                    default-action permit
+                    entry 100
+                        src-ip 192.168.2.0/24
+                        protocol tcp
+                        dst-port 22 65535
+                        action permit
+                    exit
+                    no shutdown
+                exit
+            exit
+            per-peer-queuing
+            cpu-protection
+                link-specific-rate max
+                policy 254 create
+                exit
+                policy 255 create
+                exit
+                port-overall-rate 15000
+            exit
+            dist-cpu-protection
+                policy "_default-access-policy" create
+                exit
+                policy "_default-network-policy" create
+                exit
+            exit
+        exit
+    exit
+#--------------------------------------------------
+echo "Log Configuration"
+#--------------------------------------------------
+    log
+    exit
+#--------------------------------------------------
+echo "System Security Cpm Hw Filters and PKI Configuration"
+#--------------------------------------------------
+    system
+        security
+        exit
+    exit
+#--------------------------------------------------
+echo "QoS Policy Configuration"
+#--------------------------------------------------
+    qos
+    exit
+#--------------------------------------------------
+echo "Switch Fabric Configuration"
+#--------------------------------------------------
+    sfm 1
+        sfm-type m-sfm5-12e
+        no shutdown
+    exit
+    sfm 2
+        sfm-type m-sfm5-12e
+        no shutdown
+    exit
+    sfm 3
+        sfm-type m-sfm5-12e
+        no shutdown
+    exit
+#--------------------------------------------------
+echo "Card Configuration"
+#--------------------------------------------------
+    card 1
+        card-type iom3-xp
+        mda 1
+            mda-type m10-1gb-xp-sfp
+            no shutdown
+        exit
+        no shutdown
+    exit
+#--------------------------------------------------
+echo "Port Configuration"
+#--------------------------------------------------
+    port 1/1/1
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/2
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/3
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/4
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/5
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/6
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/7
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/8
+        ethernet
+            encap-type dot1q
+            lldp
+                dest-mac nearest-bridge
+                    admin-status tx-rx
+                    notification
+                    tx-tlvs port-desc sys-name sys-desc sys-cap
+                    tx-mgmt-address system system-ipv6
+                    port-id-subtype tx-if-name
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/9
+        ethernet
+            lldp
+                dest-mac nearest-bridge
+                    tx-mgmt-address system
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+    port 1/1/10
+        ethernet
+            lldp
+                dest-mac nearest-bridge
+                    tx-mgmt-address system
+                exit
+            exit
+        exit
+        no shutdown
+    exit
+#--------------------------------------------------
+echo "System Sync-If-Timing Configuration"
+#--------------------------------------------------
+    system
+        sync-if-timing
+            begin
+            commit
+        exit
+    exit
+#--------------------------------------------------
+echo "Management Router Configuration"
+#--------------------------------------------------
+    router management
+    exit
+
+#--------------------------------------------------
+echo "Router (Network Side) Configuration"
+#--------------------------------------------------
+    router Base
+        interface "system"
+            address 100.64.0.3/32
+            ipv6
+                address 2001:db8:293:ffff::3/128
+            exit
+            no shutdown
+        exit
+        interface "vsr3-vmx7"
+            address 10.99.250.2/30
+            port 1/1/6:0
+            ipv6
+                address 2001:db8:293:f4f::3/127
+            exit
+            no shutdown
+        exit
+        interface "vsr3-vsr1"
+            address 10.2.1.3/31
+            port 1/1/3:5
+            ipv6
+                address 2001:db8:293:f2f::3/127
+            exit
+            no shutdown
+        exit
+        interface "vsr3-vsr2"
+            address 10.1.1.4/31
+            port 1/1/2:5
+            ipv6
+                address 2001:db8:293:f2f::5/127
+            exit
+            no shutdown
+        exit
+        interface "vsr3-vsr4"
+            address 10.1.1.6/31
+            port 1/1/1:5
+            ipv6
+                address 2001:db8:293:f2f::6/127
+            exit
+            no shutdown
+        exit
+        interface "vsr3-vsr5"
+            address 10.1.1.27/31
+            port 1/1/4:5
+            ipv6
+                address 2001:db8:293:f2f::1b/127
+            exit
+            no shutdown
+        exit
+        autonomous-system 65505
+        ecmp 2
+        router-id 100.64.0.3
+        ldp-shortcut ipv4 ipv6
+#--------------------------------------------------
+echo "Aggregate Configuration"
+#--------------------------------------------------
+        aggregate 100.123.0.0/16 black-hole
+#--------------------------------------------------
+echo "MPLS LABEL RANGE Configuration"
+#--------------------------------------------------
+        mpls-labels
+            sr-labels start 400000 end 500000
+        exit
+#--------------------------------------------------
+echo "ISIS Configuration"
+#--------------------------------------------------
+        isis 0
+            router-id 100.64.0.3
+            area-id 49.0001
+            traffic-engineering
+            advertise-router-capability area
+            ipv6-routing mt
+            multi-topology
+                ipv6-unicast
+            exit
+            level 1
+                wide-metrics-only
+            exit
+            level 2
+                wide-metrics-only
+            exit
+            interface "system"
+                ipv4-node-sid index 23000
+                no shutdown
+            exit
+            interface "vsr3-vmx7"
+                interface-type point-to-point
+                level 1
+                    metric 25000
+                exit
+                level 2
+                    metric 25000
+                exit
+                no shutdown
+            exit
+            interface "vsr3-vsr1"
+                interface-type point-to-point
+                level 1
+                    metric 25000
+                exit
+                no shutdown
+            exit
+            interface "vsr3-vsr2"
+                interface-type point-to-point
+                level 1
+                    metric 25000
+                exit
+                level 2
+                    metric 25000
+                exit
+                no shutdown
+            exit
+            interface "vsr3-vsr4"
+                interface-type point-to-point
+                level 1
+                    metric 25000
+                exit
+                level 2
+                    metric 25000
+                exit
+                no shutdown
+            exit
+            interface "vsr3-vsr5"
+                interface-type point-to-point
+                level 1
+                    metric 25000
+                exit
+                level 2
+                    metric 25000
+                exit
+                no shutdown
+            exit
+            segment-routing
+                prefix-sid-range global
+                no shutdown
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "MPLS Configuration"
+#--------------------------------------------------
+        mpls
+            interface "system"
+                no shutdown
+            exit
+            interface "vsr3-vmx7"
+                no shutdown
+            exit
+            interface "vsr3-vsr1"
+                no shutdown
+            exit
+            interface "vsr3-vsr5"
+                no shutdown
+            exit
+        exit
+#--------------------------------------------------
+echo "RSVP Configuration"
+#--------------------------------------------------
+        rsvp
+            refresh-reduction-over-bypass enable
+            interface "system"
+                no shutdown
+            exit
+            interface "vsr3-vmx7"
+                no shutdown
+            exit
+            interface "vsr3-vsr1"
+                no shutdown
+            exit
+            interface "vsr3-vsr5"
+                no shutdown
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "MPLS LSP Configuration"
+#--------------------------------------------------
+        mpls
+            path "loose"
+                no shutdown
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "LDP Configuration"
+#--------------------------------------------------
+        ldp
+            interface-parameters
+                interface "vsr3-vmx7" dual-stack
+                    ipv4
+                        no shutdown
+                    exit
+                    no shutdown
+                exit
+                interface "vsr3-vsr1" dual-stack
+                    ipv4
+                        no shutdown
+                    exit
+                    no shutdown
+                exit
+                interface "vsr3-vsr2" dual-stack
+                    ipv4
+                        no shutdown
+                    exit
+                    no shutdown
+                exit
+                interface "vsr3-vsr4" dual-stack
+                    ipv4
+                        no shutdown
+                    exit
+                    no shutdown
+                exit
+                interface "vsr3-vsr5" dual-stack
+                    ipv4
+                        no shutdown
+                    exit
+                    no shutdown
+                exit
+            exit
+            targeted-session
+            exit
+            no shutdown
+        exit
+    exit
+
+#--------------------------------------------------
+echo "Service Configuration"
+#--------------------------------------------------
+    service
+        customer 1 create
+            description "Default customer"
+        exit
+    exit
+#--------------------------------------------------
+echo "Router (Service Side) Configuration"
+#--------------------------------------------------
+    router Base
+#--------------------------------------------------
+echo "ISIS Configuration"
+#--------------------------------------------------
+        isis 0
+            segment-routing
+                prefix-sid-range global
+                no shutdown
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "Policy Configuration"
+#--------------------------------------------------
+        policy-options
+            begin
+            prefix-list "vsr3-exact-v4"
+                prefix 100.123.0.0/16 exact
+            exit
+            policy-statement "aggregate-routes"
+                entry 10
+                    description "vsr3-aggregate"
+                    from
+                        protocol aggregate
+                        prefix-list "vsr3-exact-v4"
+                    exit
+                    action accept
+                        local-preference 10000
+                    exit
+                exit
+            exit
+            policy-statement "connected-routes"
+                entry 5
+                    from
+                        protocol direct
+                    exit
+                    action accept
+                        local-preference 10000
+                    exit
+                exit
+            exit
+            commit
+        exit
+#--------------------------------------------------
+echo "BGP Configuration"
+#--------------------------------------------------
+        bgp
+            ibgp-multipath
+            best-path-selection
+                deterministic-med
+            exit
+            next-hop-resolution
+                shortcut-tunnel
+                    family ipv4
+                        resolution-filter
+                            ldp
+                        exit
+                        resolution filter
+                    exit
+                exit
+                label-route-transport-tunnel
+                    family ipv4
+                        resolution-filter
+                            no ldp
+                        exit
+                        resolution disabled
+                    exit
+                    family vpn
+                        resolution-filter
+                            no ldp
+                        exit
+                        resolution disabled
+                    exit
+                    family ipv6
+                        resolution-filter
+                            no ldp
+                        exit
+                        resolution disabled
+                    exit
+                exit
+            exit
+            group "ibgp"
+                family ipv4 ipv6 vpn-ipv4 mcast-ipv4 vpn-ipv6
+                next-hop-self
+                type internal
+                export "aggregate-routes" "connected-routes"
+                local-as 65505
+                peer-as 65505
+                local-address 100.64.0.3
+                neighbor 100.64.0.1
+                exit
+                neighbor 100.64.0.2
+                exit
+                neighbor 100.64.0.4
+                exit
+                neighbor 100.64.0.5
+                exit
+                neighbor 100.64.0.6
+                exit
+                neighbor 100.64.0.7
+                exit
+            exit
+            no shutdown
+        exit
+    exit
+
+
+exit all

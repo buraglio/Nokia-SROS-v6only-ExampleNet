@@ -1,0 +1,238 @@
+version 20190319.203446_builder.r1013243;
+system {
+    root-authentication {
+        encrypted-password "$6$CdRewH/F$A/Wbh.30WvOAMvFeuITkzMe/Yb3Rdm7WpJjL/Y4Fr31qb3Z633MU19ZM08b84yFmmxlW/W7p9TjVRkOvg8JuE0"; ## SECRET-DATA
+    }
+    services {
+        ssh {
+            root-login allow;
+            protocol-version v2;
+            connection-limit 10;
+            rate-limit 15;
+        }
+        netconf {
+            ssh;
+        }
+    }
+    host-name vmx7;
+    time-zone America/Chicago;
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+    processes {
+        dhcp-service {
+            traceoptions {
+                file dhcp_logfile size 10m;
+                level all;
+                flag packet;
+            }
+        }
+    }
+}
+chassis {
+    fpc 0 {
+        pic 0 {
+            interface-type ge;
+        }
+    }
+    network-services enhanced-ip;
+}
+interfaces {
+    ge-0/0/0 {
+        description "vmx7 - vsr3";
+        unit 0 {
+            family inet {
+                address 10.99.250.1/30;
+            }
+            family iso;
+            family inet6 {
+                address 2001:db8:293:f4f::2/127;
+            }
+            family mpls;
+        }
+    }
+    ge-0/0/1 {
+        description "vmx7 - vsr4";
+        unit 0 {
+            family inet {
+                address 10.99.250.5/30;
+            }
+            family iso;
+            family inet6 {
+                address 2001:db8:293:f4f::4/127;
+            }
+            family mpls;
+        }
+    }
+    ge-0/0/2 {
+        description "Transit Peering";
+        unit 0 {
+            family inet {
+                address 10.99.249.2/30;
+            }
+            family inet6 {
+                address 2001:db8:99:b33f::2/126;
+            }
+        }
+    }
+    fxp0 {
+        unit 0 {
+            family inet {
+                address 10.255.254.7/24;
+            }
+        }
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                address 100.64.0.7/32;
+            }
+            family iso {
+                address 49.0001.0010.0100.2937.00;
+            }
+            family inet6 {
+                address 2001:db8:293:ffff::7/128;
+            }
+        }
+        unit 111 {
+            family inet {
+                address 10.111.1.7/32;
+            }
+            family inet6 {
+                address fc00:0000::111:1:7/128;
+            }
+        }
+    }
+}
+policy-options {
+    policy-statement next-hop-self {
+        then {
+            next-hop self;
+        }
+    }
+    policy-statement reject-all {
+        then reject;
+    }
+    policy-statement to-ldp {
+        from protocol bgp;
+        then accept;
+    }
+}
+routing-instances {
+    111 {
+        instance-type vrf;
+        interface lo0.111;
+        route-distinguisher 65505:7;
+        vrf-target target:65505:1;
+        vrf-table-label;
+    }
+}
+routing-options {
+    router-id 100.64.0.7;
+    autonomous-system 65505;
+}
+protocols {
+    ldp {
+        preference 9;
+        interface ge-0/0/0.0;
+        interface ge-0/0/1.0;
+        interface ge-0/0/2.0;
+    }
+    bgp {
+        group ibgp {
+            type internal;
+            local-address 100.64.0.7;
+            family inet {
+                any;
+            }
+            family inet-vpn {
+                unicast;
+            }
+            family inet6 {
+                any;
+            }
+            family inet6-vpn {
+                any;
+            }
+            export next-hop-self;
+            peer-as 65505;
+            local-as 65505;
+            neighbor 100.64.0.1 {
+                description vmx1;
+            }
+            neighbor 100.64.0.2 {
+                description vmx2;
+            }
+            neighbor 100.64.0.3 {
+                description vmx3;
+            }
+            neighbor 100.64.0.4 {
+                description vmx4;
+            }
+            neighbor 100.64.0.6 {
+                description vmx6;
+            }
+            neighbor 100.64.0.5 {
+                description vmx5;
+            }
+        }
+        group ebgp {
+            type external;
+            export reject-all;
+            local-as 65505;
+            neighbor 10.99.249.1 {
+                description transit1;
+                peer-as 65998;
+            }
+        }
+    }
+    isis {
+        traffic-engineering {
+            family inet {
+                shortcuts;
+            }
+        }
+        source-packet-routing {
+            srgb start-label 400000 index-range 99999;
+            node-segment ipv4-index 20000;
+        }
+        level 1 disable;
+        level 2 wide-metrics-only;
+        interface ge-0/0/0.0 {
+            point-to-point;
+        }
+        interface ge-0/0/1.0 {
+            point-to-point;
+        }
+        interface ge-0/0/2.0 {
+            point-to-point;
+        }
+        interface lo0.0 {
+            passive;
+        }
+    }
+    rsvp {
+        interface ge-0/0/0.0;
+        interface ge-0/0/1.0;
+        interface ge-0/0/2.0;
+    }
+    mpls {
+        traffic-engineering;
+        interface ge-0/0/0.0;
+        interface ge-0/0/1.0;
+        interface ge-0/0/2.0;
+    }
+    lldp {
+        interface all;
+    }
+    protection-group;
+}

@@ -1,0 +1,47 @@
+# aug/04/2020 21:36:42 by RouterOS 6.47.1
+# software id =
+#
+#
+#
+/interface bridge
+add disabled=yes name=bridge.5 protocol-mode=none
+add name=loopback0
+/interface vlan
+add interface=ether2 name=ether2.5 vlan-id=5
+/routing bgp instance
+set default as=65998 redistribute-other-bgp=yes router-id=172.16.99.1
+/interface bridge port
+add bridge=bridge.5 disabled=yes interface=ether2.5
+/ip address
+add address=172.16.1.1/30 interface=ether1 network=172.16.1.0
+add address=172.16.99.1 interface=loopback0 network=172.16.99.1
+add address=100.66.66.1/30 interface=ether2.5 network=100.66.66.0
+add address=10.99.249.1/30 interface=ether4 network=10.99.249.0
+/ip dhcp-client
+add interface=ether1
+/ip route
+add distance=1 gateway=172.16.1.2
+/ipv6 address
+add address=2001:db8:998::1/126 advertise=no interface=ether1
+add address=2001:db8:100:66::2/126 advertise=no interface=ether2.5
+/ipv6 route
+add distance=1 gateway=2001:db8:998::2
+/routing bgp peer
+add address-families=ip,ipv6 in-filter=bgp-in multihop=yes name=peer1 \
+    remote-address=172.16.1.2 remote-as=65999 update-source=172.16.1.1
+add address-families=ip,ipv6 multihop=yes name=peer2 remote-address=\
+    2001:db8:998::2 remote-as=65999 update-source=2001:db8:998::1
+add address-families=ip,ipv6 multihop=yes name=vsr5 out-filter=export-all \
+    remote-address=100.66.66.2 remote-as=65505 update-source=100.66.66.1
+add address-families=ip,ipv6 name=vmx7 out-filter=export-all \
+    remote-address=10.99.249.2 remote-as=65505
+/routing filter
+add chain=bgp-in set-bgp-communities=5:5
+add action=accept address-family=ip,ipv6 chain=export-all prefix=\
+    0.0.0.0/0 prefix-length=0-32 protocol=bgp
+add action=accept address-family=ipv6 chain=export-all prefix=::/0 \
+    prefix-length=0-48
+/system identity
+set name=transit1
+/system logging
+add disabled=yes topics=bgp
