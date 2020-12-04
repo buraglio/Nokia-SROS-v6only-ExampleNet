@@ -5,6 +5,7 @@ vsr4            10.255.254.4      Nokia    admin/admin   ssh
 vsr5            10.255.254.5      Nokia    admin/admin   ssh
 vsr6            10.255.254.6      Nokia    admin/admin   ssh
 vmx7            10.255.254.7      Juniper  root/Juniper  ssh
+vsr8            10.255.254.8      Nokia    admin/admin   ssh
 transit         10.255.254.179    Mikrotik admin/none    telnet
 fulltable-linux 10.255.254.250    Ubuntu bgpuser/bgpuser ssh
 

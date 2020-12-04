@@ -5,12 +5,8 @@ echo "System Configuration"
 #--------------------------------------------------
     system
         name "vsr1"
-        dns
-        exit
         rollback
             rollback-location "cf3:/ansible"
-        exit
-        snmp
         exit
         time
             sntp
@@ -18,29 +14,12 @@ echo "System Configuration"
             exit
             zone UTC
         exit
-        thresholds
-            rmon
-            exit
-        exit
     exit
 #--------------------------------------------------
 echo "System Security Configuration"
 #--------------------------------------------------
     system
         security
-            management-access-filter
-                ip-filter
-                    shutdown
-                    default-action permit
-                    entry 100
-                        src-ip 192.168.2.0/24
-                        protocol tcp
-                        dst-port 22 65535
-                        action permit
-                    exit
-                    no shutdown
-                exit
-            exit
             per-peer-queuing
             cpu-protection
                 link-specific-rate max
@@ -62,18 +41,6 @@ echo "System Security Configuration"
 echo "Log Configuration"
 #--------------------------------------------------
     log
-    exit
-#--------------------------------------------------
-echo "System Security Cpm Hw Filters and PKI Configuration"
-#--------------------------------------------------
-    system
-        security
-        exit
-    exit
-#--------------------------------------------------
-echo "QoS Policy Configuration"
-#--------------------------------------------------
-    qos
     exit
 #--------------------------------------------------
 echo "Switch Fabric Configuration"
@@ -244,6 +211,16 @@ echo "Port Configuration"
         exit
         no shutdown
     exit
+    port A/3
+        shutdown
+        ethernet
+        exit
+    exit
+    port B/3
+        shutdown
+        ethernet
+        exit
+    exit
 #--------------------------------------------------
 echo "System Sync-If-Timing Configuration"
 #--------------------------------------------------
@@ -264,14 +241,12 @@ echo "Router (Network Side) Configuration"
 #--------------------------------------------------
     router Base
         interface "system"
-            address 100.64.0.1/32
             ipv6
                 address 2001:db8:293:ffff::1/128
             exit
             no shutdown
         exit
         interface "vsr1-vsr2"
-            address 10.1.1.2/31
             port 1/1/1:5
             ipv6
                 address 2001:db8:293:f2f::2/127
@@ -279,7 +254,6 @@ echo "Router (Network Side) Configuration"
             no shutdown
         exit
         interface "vsr1-vsr3"
-            address 10.2.1.2/31
             port 1/1/3:5
             ipv6
                 address 2001:db8:293:f3f::2/127
@@ -287,7 +261,6 @@ echo "Router (Network Side) Configuration"
             no shutdown
         exit
         interface "vsr1-vsr4"
-            address 10.1.1.8/31
             port 1/1/2:5
             ipv6
                 address 2001:db8:293:f2f::8/127
@@ -295,7 +268,6 @@ echo "Router (Network Side) Configuration"
             no shutdown
         exit
         interface "vsr1-vsr6"
-            address 10.2.1.23/31
             port 1/1/4:5
             ipv6
                 address 2001:db8:293:f3f::17/127
@@ -305,13 +277,9 @@ echo "Router (Network Side) Configuration"
         autonomous-system 65505
         ecmp 2
         router-id 100.64.0.1
-        ldp-shortcut ipv4 ipv6
+        ldp-shortcut ipv6
 #--------------------------------------------------
-echo "Aggregate Configuration"
-#--------------------------------------------------
-        aggregate 100.121.0.0/16 black-hole
-#--------------------------------------------------
-echo "MPLS LABEL RANGE Configuration"
+echo "MPLS Label Range Configuration"
 #--------------------------------------------------
         mpls-labels
             sr-labels start 400000 end 500000
@@ -334,8 +302,12 @@ echo "ISIS Configuration"
             level 2
                 wide-metrics-only
             exit
+            segment-routing
+                prefix-sid-range global
+                no shutdown
+            exit
             interface "system"
-                ipv4-node-sid index 21000
+                ipv6-node-sid index 21000
                 no shutdown
             exit
             interface "vsr1-vsr2"
@@ -373,10 +345,6 @@ echo "ISIS Configuration"
                 level 2
                     metric 25000
                 exit
-                no shutdown
-            exit
-            segment-routing
-                prefix-sid-range global
                 no shutdown
             exit
             no shutdown
@@ -430,9 +398,14 @@ echo "MPLS LSP Configuration"
 echo "LDP Configuration"
 #--------------------------------------------------
         ldp
+            import-pmsi-routes
+            exit
             interface-parameters
                 interface "vsr1-vsr2" dual-stack
                     ipv4
+                        no shutdown
+                    exit
+                    ipv6
                         no shutdown
                     exit
                     no shutdown
@@ -441,16 +414,25 @@ echo "LDP Configuration"
                     ipv4
                         no shutdown
                     exit
+                    ipv6
+                        no shutdown
+                    exit
                     no shutdown
                 exit
                 interface "vsr1-vsr4" dual-stack
                     ipv4
                         no shutdown
                     exit
+                    ipv6
+                        no shutdown
+                    exit
                     no shutdown
                 exit
                 interface "vsr1-vsr6" dual-stack
                     ipv4
+                        no shutdown
+                    exit
+                    ipv6
                         no shutdown
                     exit
                     no shutdown
@@ -466,14 +448,14 @@ echo "LDP Configuration"
 echo "Service Configuration"
 #--------------------------------------------------
     service
-        customer 1 create
+        customer 1 name "1" create
             description "Default customer"
         exit
-        vprn 111 customer 1 create
+        vprn 111 name "111" customer 1 create
             interface "lo0.111" create
             exit
         exit
-        vprn 111 customer 1 create
+        vprn 111 name "111" customer 1 create
             autonomous-system 65505
             route-distinguisher 65505:1
             auto-bind-tunnel
@@ -484,9 +466,8 @@ echo "Service Configuration"
             exit
             vrf-target target:65505:1
             interface "lo0.111" create
-                address 10.111.1.1/32
                 ipv6
-                    address fc00::111:1:7/128
+                    address fc00::111:1:1/128
                 exit
                 loopback
             exit
@@ -501,10 +482,6 @@ echo "Router (Service Side) Configuration"
 echo "ISIS Configuration"
 #--------------------------------------------------
         isis 0
-            segment-routing
-                prefix-sid-range global
-                no shutdown
-            exit
             no shutdown
         exit
 #--------------------------------------------------
@@ -512,15 +489,16 @@ echo "Policy Configuration"
 #--------------------------------------------------
         policy-options
             begin
-            prefix-list "vsr1-exact-v4"
-                prefix 100.121.0.0/16 exact
+            prefix-list "vsr1-exact-v6"
+                prefix 2001:db8::/32 exact
+                prefix fc00::/32 exact
             exit
             policy-statement "aggregate-routes"
                 entry 10
-                    description "vsr1-aggregate"
+                    description "vsr1-aggregate-v6"
                     from
                         protocol aggregate
-                        prefix-list "vsr1-exact-v4"
+                        prefix-list "vsr1-exact-v6"
                     exit
                     action accept
                         local-preference 10000
@@ -549,58 +527,60 @@ echo "BGP Configuration"
             exit
             next-hop-resolution
                 shortcut-tunnel
-                    family ipv4
+                    family ipv6
                         resolution-filter
                             ldp
                         exit
                         resolution filter
                     exit
                 exit
-                label-route-transport-tunnel
-                    family ipv4
-                        resolution-filter
-                            no ldp
+                labeled-routes
+                    transport-tunnel
+                        family vpn
+                            resolution-filter
+                                no ldp
+                                bgp
+                            exit
+                            resolution disabled
                         exit
-                        resolution disabled
-                    exit
-                    family vpn
-                        resolution-filter
-                            no ldp
+                        family label-ipv6
+                            resolution-filter
+                                no ldp
+                            exit
+                            resolution disabled
                         exit
-                        resolution disabled
-                    exit
-                    family ipv6
-                        resolution-filter
-                            no ldp
-                        exit
-                        resolution disabled
                     exit
                 exit
             exit
             group "ibgp"
-                family ipv4 ipv6 vpn-ipv4 mcast-ipv4 vpn-ipv6
+                family ipv6 vpn-ipv6
                 next-hop-self
                 type internal
                 export "aggregate-routes" "connected-routes"
                 local-as 65505
                 peer-as 65505
-                local-address 100.64.0.1
-                neighbor 100.64.0.2
+                local-address "system"
+                neighbor 2001:db8:293:ffff::2
                 exit
-                neighbor 100.64.0.3
+                neighbor 2001:db8:293:ffff::3
                 exit
-                neighbor 100.64.0.4
+                neighbor 2001:db8:293:ffff::4
                 exit
-                neighbor 100.64.0.5
+                neighbor 2001:db8:293:ffff::5
                 exit
-                neighbor 100.64.0.6
+                neighbor 2001:db8:293:ffff::6
                 exit
-                neighbor 100.64.0.7
+                neighbor 2001:db8:293:ffff::7
                 exit
             exit
             no shutdown
         exit
     exit
 
+#--------------------------------------------------
+echo "Log all events for service vprn Configuration"
+#--------------------------------------------------
+    log
+    exit
 
 exit all
