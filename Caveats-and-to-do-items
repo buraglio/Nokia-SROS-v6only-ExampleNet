@@ -1,0 +1,4 @@
+Caveats and to-address items:
+1. bof address ipv6
+2. VPRN for IPv4-as-a-Service
+3. Move Sinkhole into VPRN
