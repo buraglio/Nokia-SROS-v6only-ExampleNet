@@ -166,6 +166,10 @@
 /configure port 1/2/23 ethernet
 /configure port 1/2/24 shutdown
 /configure port 1/2/24 ethernet
+/configure port A/3 shutdown
+/configure port A/3 ethernet
+/configure port B/3 shutdown
+/configure port B/3 ethernet
 /configure system sync-if-timing begin
 /configure system sync-if-timing commit
 /configure router management
@@ -186,8 +190,7 @@
 /configure router Base autonomous-system 65505
 /configure router Base ecmp 2
 /configure router Base router-id 100.64.0.2
-/configure router Base ldp-shortcut ipv4 ipv6
-/configure router Base aggregate 100.122.0.0/16 black-hole
+/configure router Base ldp-shortcut ipv6
 /configure router Base mpls-labels sr-labels start 400000 end 500000
 /configure router Base isis 0 router-id 100.64.0.2
 /configure router Base isis 0 area-id 49.0001
@@ -199,7 +202,7 @@
 /configure router Base isis 0 level 2 wide-metrics-only
 /configure router Base isis 0 segment-routing prefix-sid-range global
 /configure router Base isis 0 segment-routing no shutdown
-/configure router Base isis 0 interface "system" ipv4-node-sid index 22000
+/configure router Base isis 0 interface "system" ipv6-node-sid index 22000
 /configure router Base isis 0 interface "system" no shutdown
 /configure router Base isis 0 interface "vsr2-vsr1" interface-type point-to-point
 /configure router Base isis 0 interface "vsr2-vsr1" level 1 metric 25000
@@ -231,28 +234,23 @@
 /configure router Base rsvp no shutdown
 /configure router Base mpls path "loose" no shutdown
 /configure router Base mpls no shutdown
-/configure router Base ldp interface-parameters interface "vsr2-vsr1" dual-stack ipv4 no shutdown
+/configure router Base ldp import-pmsi-routes
+/configure router Base ldp interface-parameters interface "vsr2-vsr1" dual-stack ipv4 shutdown
+/configure router Base ldp interface-parameters interface "vsr2-vsr1" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr2-vsr1" dual-stack no shutdown
-/configure router Base ldp interface-parameters interface "vsr2-vsr3" dual-stack ipv4 no shutdown
+/configure router Base ldp interface-parameters interface "vsr2-vsr3" dual-stack ipv4 shutdown
+/configure router Base ldp interface-parameters interface "vsr2-vsr3" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr2-vsr3" dual-stack no shutdown
-/configure router Base ldp interface-parameters interface "vsr2-vsr4" dual-stack ipv4 no shutdown
+/configure router Base ldp interface-parameters interface "vsr2-vsr4" dual-stack ipv4 shutdown
+/configure router Base ldp interface-parameters interface "vsr2-vsr4" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr2-vsr4" dual-stack no shutdown
-/configure router Base ldp interface-parameters interface "vsr2-vsr5" dual-stack ipv4 no shutdown
+/configure router Base ldp interface-parameters interface "vsr2-vsr5" dual-stack ipv4 shutdown
+/configure router Base ldp interface-parameters interface "vsr2-vsr5" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr2-vsr5" dual-stack no shutdown
 /configure router Base ldp targeted-session
 /configure router Base ldp no shutdown
 /configure service customer 1 name "1" create
 /configure service customer 1 name "1" description "Default customer"
-/configure service ies 1 name "1" customer 1 create
-/configure service ies 1 name "1" customer 1 interface "vsr2-sinkhole" create
-/configure service ies 1 name "1" customer 1 interface "vsr2-sinkhole"
-/configure service ies 1 name "1" customer 1 create
-/configure service ies 1 name "1" customer 1 interface "vsr2-sinkhole" create
-/configure service ies 1 name "1" customer 1 interface "vsr2-sinkhole" address 10.250.250.2/30
-/configure service ies 1 name "1" customer 1 interface "vsr2-sinkhole" ipv6 address 2001:db8:293:eee::3/127
-/configure service ies 1 name "1" customer 1 interface "vsr2-sinkhole" sap 1/1/6:0 create
-/configure service ies 1 name "1" customer 1 interface "vsr2-sinkhole" sap 1/1/6:0
-/configure service ies 1 name "1" customer 1 no shutdown
 /configure router Base isis 0 no shutdown
 /configure router Base policy-options begin
 /configure router Base policy-options prefix-list "vsr1-exact-v6" prefix 2001:db8::/32 exact
@@ -273,18 +271,6 @@
 /configure router Base bgp next-hop-resolution labeled-routes transport-tunnel family vpn resolution disabled
 /configure router Base bgp next-hop-resolution labeled-routes transport-tunnel family label-ipv6 resolution-filter no ldp
 /configure router Base bgp next-hop-resolution labeled-routes transport-tunnel family label-ipv6 resolution disabled
-/configure router Base bgp group "ebgp" family ipv4 ipv6
-/configure router Base bgp group "ebgp" type external
-/configure router Base bgp group "ebgp" local-as 65505
-/configure router Base bgp group "ebgp" neighbor 10.250.250.1 multihop 32
-/configure router Base bgp group "ebgp" neighbor 10.250.250.1 import "sinkhole-accept"
-/configure router Base bgp group "ebgp" neighbor 10.250.250.1 export "reject-all"
-/configure router Base bgp group "ebgp" neighbor 10.250.250.1 peer-as 65534
-/configure router Base bgp group "ebgp" neighbor 2001:db8:293:eee::2 multihop 32
-/configure router Base bgp group "ebgp" neighbor 2001:db8:293:eee::2 import "sinkhole6-accept"
-/configure router Base bgp group "ebgp" neighbor 2001:db8:293:eee::2 export "reject-all"
-/configure router Base bgp group "ebgp" neighbor 2001:db8:293:eee::2 peer-as 65534
-/configure router Base bgp group "ibgp" family ipv4 ipv6 vpn-ipv4 mcast-ipv4 vpn-ipv6
 /configure router Base bgp group "ibgp" family ipv6 vpn-ipv6
 /configure router Base bgp group "ibgp" next-hop-self
 /configure router Base bgp group "ibgp" type internal

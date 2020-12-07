@@ -418,6 +418,16 @@ echo "Port Configuration"
         ethernet
         exit
     exit
+    port A/3
+        shutdown
+        ethernet
+        exit
+    exit
+    port B/3
+        shutdown
+        ethernet
+        exit
+    exit
 #--------------------------------------------------
 echo "System Sync-If-Timing Configuration"
 #--------------------------------------------------
@@ -438,14 +448,12 @@ echo "Router (Network Side) Configuration"
 #--------------------------------------------------
     router Base
         interface "system"
-            address 100.64.0.2/32
             ipv6
                 address 2001:db8:293:ffff::2/128
             exit
             no shutdown
         exit
         interface "vsr2-vsr1"
-            address 10.1.1.3/31
             port 1/1/2:5
             ipv6
                 address 2001:db8:293:f2f::3/127
@@ -453,7 +461,6 @@ echo "Router (Network Side) Configuration"
             no shutdown
         exit
         interface "vsr2-vsr3"
-            address 10.1.1.5/31
             port 1/1/1:5
             ipv6
                 address 2001:db8:293:f2f::4/127
@@ -461,7 +468,6 @@ echo "Router (Network Side) Configuration"
             no shutdown
         exit
         interface "vsr2-vsr4"
-            address 10.2.1.4/31
             port 1/1/3:5
             ipv6
                 address 2001:db8:293:f3f::4/127
@@ -469,7 +475,6 @@ echo "Router (Network Side) Configuration"
             no shutdown
         exit
         interface "vsr2-vsr5"
-            address 10.1.1.25/31
             port 1/1/4:5
             ipv6
                 address 2001:db8:293:f2f::19/127
@@ -479,11 +484,7 @@ echo "Router (Network Side) Configuration"
         autonomous-system 65505
         ecmp 2
         router-id 100.64.0.2
-        ldp-shortcut ipv4 ipv6
-#--------------------------------------------------
-echo "Aggregate Configuration"
-#--------------------------------------------------
-        aggregate 100.122.0.0/16 black-hole
+        ldp-shortcut ipv6
 #--------------------------------------------------
 echo "MPLS Label Range Configuration"
 #--------------------------------------------------
@@ -513,7 +514,7 @@ echo "ISIS Configuration"
                 no shutdown
             exit
             interface "system"
-                ipv4-node-sid index 22000
+                ipv6-node-sid index 22000
                 no shutdown
             exit
             interface "vsr2-vsr1"
@@ -610,27 +611,41 @@ echo "MPLS LSP Configuration"
 echo "LDP Configuration"
 #--------------------------------------------------
         ldp
+            import-pmsi-routes
+            exit
             interface-parameters
                 interface "vsr2-vsr1" dual-stack
                     ipv4
+                        shutdown
+                    exit
+                    ipv6
                         no shutdown
                     exit
                     no shutdown
                 exit
                 interface "vsr2-vsr3" dual-stack
                     ipv4
+                        shutdown
+                    exit
+                    ipv6
                         no shutdown
                     exit
                     no shutdown
                 exit
                 interface "vsr2-vsr4" dual-stack
                     ipv4
+                        shutdown
+                    exit
+                    ipv6
                         no shutdown
                     exit
                     no shutdown
                 exit
                 interface "vsr2-vsr5" dual-stack
                     ipv4
+                        shutdown
+                    exit
+                    ipv6
                         no shutdown
                     exit
                     no shutdown
@@ -649,21 +664,6 @@ echo "Service Configuration"
         customer 1 name "1" create
             description "Default customer"
         exit
-        ies 1 name "1" customer 1 create
-            interface "vsr2-sinkhole" create
-            exit
-        exit
-        ies 1 name "1" customer 1 create
-            interface "vsr2-sinkhole" create
-                address 10.250.250.2/30
-                ipv6
-                    address 2001:db8:293:eee::3/127
-                exit
-                sap 1/1/6:0 create
-                exit
-            exit
-            no shutdown
-        exit
     exit
 #--------------------------------------------------
 echo "Router (Service Side) Configuration"
@@ -680,35 +680,16 @@ echo "Policy Configuration"
 #--------------------------------------------------
         policy-options
             begin
-            prefix-list "sinkhole-v4"
-                prefix 100.64.0.0/10 exact
-            exit
-            prefix-list "sinkhole-v6"
+            prefix-list "vsr1-exact-v6"
                 prefix 2001:db8::/32 exact
-            exit
-            prefix-list "vsr2-exact-v4"
-                prefix 100.122.0.0/16 exact
-            exit
-            policy-statement "reject-all"
-                default-action drop
-                exit
-            exit
-            policy-statement "sinkhole-accept"
-                description "accept supernet routes from sinkhole"
-                entry 10
-                    from
-                        prefix-list "sinkhole-v4"
-                    exit
-                exit
-                default-action accept
-                exit
+                prefix fc00::/32 exact
             exit
             policy-statement "aggregate-routes"
                 entry 10
-                    description "vsr2-aggregate"
+                    description "vsr1-aggregate-v6"
                     from
                         protocol aggregate
-                        prefix-list "vsr2-exact-v4"
+                        prefix-list "vsr1-exact-v6"
                     exit
                     action accept
                         local-preference 10000
@@ -725,16 +706,6 @@ echo "Policy Configuration"
                     exit
                 exit
             exit
-            policy-statement "sinkhole6-accept"
-                description "accept supernet v6 routes from sinkhole"
-                entry 10
-                    from
-                        prefix-list "sinkhole-v6"
-                    exit
-                exit
-                default-action accept
-                exit
-            exit
             commit
         exit
 #--------------------------------------------------
@@ -747,55 +718,60 @@ echo "BGP Configuration"
             exit
             next-hop-resolution
                 shortcut-tunnel
-                    family ipv4
+                    family ipv6
                         resolution-filter
                             ldp
                         exit
                         resolution filter
                     exit
                 exit
-            exit
-            group "ebgp"
-                family ipv4 ipv6
-                type external
-                local-as 65505
-                neighbor 10.250.250.1
-                    multihop 32
-                    import "sinkhole-accept"
-                    export "reject-all"
-                    peer-as 65534
-                exit
-                neighbor 2001:db8:293:eee::2
-                    multihop 32
-                    import "sinkhole6-accept"
-                    export "reject-all"
-                    peer-as 65534
+                labeled-routes
+                    transport-tunnel
+                        family vpn
+                            resolution-filter
+                                no ldp
+                                bgp
+                            exit
+                            resolution disabled
+                        exit
+                        family label-ipv6
+                            resolution-filter
+                                no ldp
+                            exit
+                            resolution disabled
+                        exit
+                    exit
                 exit
             exit
             group "ibgp"
-                family ipv4 ipv6 vpn-ipv4 mcast-ipv4 vpn-ipv6
+                family ipv6 vpn-ipv6
                 next-hop-self
                 type internal
                 export "aggregate-routes" "connected-routes"
                 local-as 65505
                 peer-as 65505
-                local-address 100.64.0.2
-                neighbor 100.64.0.1
+                local-address "system"
+                neighbor 2001:db8:293:ffff::1
                 exit
-                neighbor 100.64.0.3
+                neighbor 2001:db8:293:ffff::3
                 exit
-                neighbor 100.64.0.4
+                neighbor 2001:db8:293:ffff::4
                 exit
-                neighbor 100.64.0.5
+                neighbor 2001:db8:293:ffff::5
                 exit
-                neighbor 100.64.0.6
+                neighbor 2001:db8:293:ffff::6
                 exit
-                neighbor 100.64.0.7
+                neighbor 2001:db8:293:ffff::7
                 exit
             exit
             no shutdown
         exit
     exit
 
+#--------------------------------------------------
+echo "Log all events for service vprn Configuration"
+#--------------------------------------------------
+    log
+    exit
 
 exit all

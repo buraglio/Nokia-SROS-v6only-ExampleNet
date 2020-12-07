@@ -403,7 +403,7 @@ echo "LDP Configuration"
             interface-parameters
                 interface "vsr1-vsr2" dual-stack
                     ipv4
-                        no shutdown
+                        shutdown
                     exit
                     ipv6
                         no shutdown
@@ -412,7 +412,7 @@ echo "LDP Configuration"
                 exit
                 interface "vsr1-vsr3" dual-stack
                     ipv4
-                        no shutdown
+                        shutdown
                     exit
                     ipv6
                         no shutdown
@@ -421,7 +421,7 @@ echo "LDP Configuration"
                 exit
                 interface "vsr1-vsr4" dual-stack
                     ipv4
-                        no shutdown
+                        shutdown
                     exit
                     ipv6
                         no shutdown
@@ -430,7 +430,7 @@ echo "LDP Configuration"
                 exit
                 interface "vsr1-vsr6" dual-stack
                     ipv4
-                        no shutdown
+                        shutdown
                     exit
                     ipv6
                         no shutdown

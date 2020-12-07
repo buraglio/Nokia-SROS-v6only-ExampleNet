@@ -148,16 +148,16 @@
 /configure router Base mpls path "loose" no shutdown
 /configure router Base mpls no shutdown
 /configure router Base ldp import-pmsi-routes
-/configure router Base ldp interface-parameters interface "vsr1-vsr2" dual-stack ipv4 no shutdown
+/configure router Base ldp interface-parameters interface "vsr1-vsr2" dual-stack ipv4 shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr2" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr2" dual-stack no shutdown
-/configure router Base ldp interface-parameters interface "vsr1-vsr3" dual-stack ipv4 no shutdown
+/configure router Base ldp interface-parameters interface "vsr1-vsr3" dual-stack ipv4 shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr3" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr3" dual-stack no shutdown
-/configure router Base ldp interface-parameters interface "vsr1-vsr4" dual-stack ipv4 no shutdown
+/configure router Base ldp interface-parameters interface "vsr1-vsr4" dual-stack ipv4 shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr4" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr4" dual-stack no shutdown
-/configure router Base ldp interface-parameters interface "vsr1-vsr6" dual-stack ipv4 no shutdown
+/configure router Base ldp interface-parameters interface "vsr1-vsr6" dual-stack ipv4 shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr6" dual-stack ipv6 no shutdown
 /configure router Base ldp interface-parameters interface "vsr1-vsr6" dual-stack no shutdown
 /configure router Base ldp targeted-session
